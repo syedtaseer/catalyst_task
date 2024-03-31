@@ -1,20 +1,25 @@
 <?php
 
+require_once 'database.php';
+
 
 /**
  * User upload class
  */
 class UserUpload
 {
+
+	private $db;
 	
 	function __construct() {
 
-		$sopts = "u:p:h:"; 														// define short options in directives
-		$longopts = ['file:', 'create_table', 'dry_run', 'help'];			// define long options in directives
+		$sopts = "u:p:h:"; 															// define short options in directives
+		$longopts = ['file:', 'create_table', 'dry_run', 'help'];					// define long options in directives
 		$opts = getopt($sopts, $longopts);
 
 
-		if (isset($opts['help'])) {												// Help command
+		if (isset($opts['help'])) 													// Help command
+		{												
 			$output  = "******** Help ********\n";
 			$output .= "--file [csv file name]		This is the name of the CSV to be parsed\n";
 			$output .= "--create_table			This will cause the MySQL users table to be built (and no further action will be taken)\n";
@@ -25,7 +30,17 @@ class UserUpload
 			$output .= "--help				Which will output the above list of directives with details\n";
 
 		    fwrite(STDOUT, $output);
+		    exit(1);
+		
+		} 
+
+
+		elseif(isset($opts['u']) && isset($opts['p']) && isset($opts['h'])) 		// Connect to database
+		{
+			$this->db = new DB($opts['h'], $opts['u'], $opts['p']);
+
 		}
+
 
 	}
 
