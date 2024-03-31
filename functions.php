@@ -22,7 +22,11 @@ define('UPPER', 2);
 /**
  * Print standard output
  */
-function print_std($msg) {
+function print_std($msg, $eol = false, $format = null) {
+	if($format != null)
+		$msg = $format.$msg.CLOSE;
+	
+	$msg = (($eol) ? PHP_EOL : "").$msg;
     fwrite(STDOUT, $msg);
 }
 

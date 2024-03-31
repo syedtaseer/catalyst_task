@@ -21,19 +21,9 @@ class UserUpload
 
 
 		if (isset($opts['help'])) 													// Help command
-		{												
-			$output  = "******** Help ********\n";
-			$output .= "--file [csv file name]		This is the name of the CSV to be parsed\n";
-			$output .= "--create_table			This will cause the MySQL users table to be built (and no further action will be taken)\n";
-			$output .= "--dry_run			This will be used with the --file directive in case we want to run the script but not insert into the DB.All other functions will be executed, but the database won't be altered\n";
-			$output .= "-u				MySQL username\n";
-			$output .= "-p				MySQL password\n";
-			$output .= "-h				MySQL host\n";
-			$output .= "--help				Which will output the above list of directives with details\n";
-
-		    print_std($output);
-		    exit(1);
-		
+		{
+			$this->help();
+		    exit(1);		
 		}
 
 
@@ -53,6 +43,28 @@ class UserUpload
 		}
 
 
+	}
+
+
+	/**
+	 * Show the list of directives and their functions.
+	 */
+	public function help() {
+		$output = [
+			'******** Help ********' => "",
+			'-u' => "			MySQL username",
+			'-p' => "			MySQL password",
+			'-h' => "			MySQL host",
+			'--create_table' => "		This will cause the MySQL users table to be built (and no further action will be taken)",
+			'--file [csv file name]' => "	This is the name of the CSV to be parsed",
+			'--dry_run' => "		This will be used with the --file directive in case we want to run the script but not insert into the DB.All other functions will be executed, but the database won't be altered",
+			'--help' => "			Which will output the above list of directives with details",
+		];
+
+		foreach ($output as $key => $value) {
+			print_std($key, true, ITALIC.YELLOW);
+			print_std($value);
+		}
 	}
 
 
