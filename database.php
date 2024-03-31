@@ -51,11 +51,31 @@ class DB
 			}
 
 		} catch (Exception $e) {
-			print_error("Error: " . $e->getMessage());
-				
-		}		
-		
+			print_error("Error: " . $e->getMessage());			
+		}
 	}
+
+
+	/**
+	 * Build query and insert data into database
+	 */
+	public function insert_data($table, $data) {
+		try {	
+			$sql = 'INSERT INTO '. $table	.' ( ';
+			$sql .= implode(',', array_keys($data)). ') values (';
+			$sql .= implode(',', $data). ')';
+
+			if ($this->conn->query($sql) === TRUE) {
+				print_success( $data['name'].": Data inserted successfully.");
+			} else {
+			  	print_error( "Error: " . $this->conn->error);
+			}
+
+		} catch (Exception $e) {
+			print_error("Error: " . $e->getMessage());
+		}
+	}
+
 
 
 }

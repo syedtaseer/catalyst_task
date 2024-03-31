@@ -36,5 +36,18 @@ class User
 	}
 
 
+	/**
+	 * Convert model data to an array
+	 */
+	public function to_array()
+	{
+		return [
+			'name' => '"'.$this->name.'"',
+			'surname' => '"'.$this->surname.'"',
+			'email' => '"'.$this->email.'"',
+		];			
+	
+	}
+	
 
 }
