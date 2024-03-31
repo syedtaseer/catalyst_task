@@ -1,6 +1,7 @@
 <?php
 
 require_once 'database.php';
+require_once 'functions.php';
 
 
 /**
@@ -29,20 +30,36 @@ class UserUpload
 			$output .= "-h				MySQL host\n";
 			$output .= "--help				Which will output the above list of directives with details\n";
 
-		    fwrite(STDOUT, $output);
+		    print_std($output);
 		    exit(1);
 		
 		} 
 
 
-		elseif(isset($opts['u']) && isset($opts['p']) && isset($opts['h'])) 		// Connect to database
+		if(isset($opts['u']) && isset($opts['p']) && isset($opts['h'])) 		// Connect to database
 		{
 			$this->db = new DB($opts['h'], $opts['u'], $opts['p']);
+		}
+
+
+		if (isset($opts['create_table'])) 										// Create table command
+		{
+			$this->create_table('users');
 
 		}
 
 
 	}
+	
+
+	/**
+	 * Create the table in database
+	 */
+
+	public function create_table($name) {
+		$this->db->create_table(User::get_schema());
+	}
+
 
 }
 
