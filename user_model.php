@@ -13,9 +13,9 @@ class User
 
 	function __construct($name, $surname, $email)
 	{
-		$this->name = $name;
-		$this->surname = $surname;		
-		$this->email = $email;
+		$this->name = clean_data($name, TITLE);
+		$this->surname = clean_data($surname, TITLE);		
+		$this->email = clean_data($email, LOWER);
 	}
 
 
