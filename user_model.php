@@ -48,6 +48,23 @@ class User
 		];			
 	
 	}
-	
+
+
+	/**
+	 * Validate email of user
+	 */
+	public function validate_email()
+	{
+		return filter_var($this->email, FILTER_VALIDATE_EMAIL);
+	}
+
+
+	/**
+	 * Getter Setter
+	 */
+	public function get_email()
+	{
+		return $this->email;
+	}
 
 }

@@ -34,7 +34,7 @@ class UserUpload
 		    print_std($output);
 		    exit(1);
 		
-		} 
+		}
 
 
 		if(isset($opts['u']) && isset($opts['p']) && isset($opts['h'])) 		// Connect to database
@@ -49,7 +49,7 @@ class UserUpload
 
 		if (isset($opts['file'])) 												//Load and read data from file and save to database
 		{
-			$this->load_csv_data($opts['file']);
+			$this->load_csv_data($opts['file'], !isset($opts['dry_run']));
 		}
 
 
@@ -76,10 +76,13 @@ class UserUpload
 	/**
 	 * Load data form csv file to data model and save to database
 	 */
-	public function load_csv_data($file_name) {
+	public function load_csv_data($file_name, $save_data = true) {
 		try {
 			if ( !file_exists($file_name) ) {
 				throw new Exception('File not found.');
+			}
+			if($save_data && $this->db == null) {
+				throw new Exception('Database is not connected.');
 			}
 
 			$file = fopen($file_name, "r");
@@ -91,7 +94,13 @@ class UserUpload
 					continue;
 
 				$user = new User($row[0], $row[1], $row[2]);
-				$this->db->insert_data(User::get_schema()['table'], $user->to_array());			    
+
+				if ($user->validate_email()) {
+					if($save_data)
+						$this->db->insert_data(User::get_schema()['table'], $user->to_array());
+				} else {
+					print_error( "**Skip Data: ". $user->get_email()." is an invalid email.");
+				}
 			}
 
 			fclose($file);
